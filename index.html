@@ -2554,6 +2554,8 @@
       // Global search values for syncing between parts and images tabs
       let globalSearch1 = '';
       let globalSearch2 = '';
+      // Opensheet URL for Request sheet
+      const requestSheetUrl = 'https://opensheet.elk.sh/1xyy70cq2vAxGv4gPIGiL_xA5czDXqS2i6YYqW4yEVbE/Request';
       // GAS URL for the new Code.gs deployment (update with your new script ID after deployment)
       const gasUrl = 'https://script.google.com/macros/s/AKfycbwVF2HAC8EYARt6Ku2ThUZWgeVxXWDhRQCQ0vCgGvilEMg8h5Hg3BlrcJJn2qMMqpGr/exec'; // Replace with new deployment URL if different
       // Theme Management
@@ -3460,7 +3462,7 @@
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `action=insertRequest&payload=${encodeURIComponent(JSON.stringify(jsonPayload))}`  // <- แก้ไขตรงนี้
+      body: `action=insertRequest&payload=${encodeURIComponent(JSON.stringify(jsonPayload))}` // <- แก้ไขตรงนี้
     });
     const gasResult = await response.json();
     if (gasResult.status === 'success') {
@@ -4016,7 +4018,7 @@
           });
         }
       }
-      // Today tab script (adjusted for new GAS endpoint)
+      // Today tab script (adjusted for Opensheet endpoint)
       const modal = document.getElementById("detailModal");
       const modalContent = document.getElementById("modalContent");
       const closeModal = document.getElementById("closeModal");
@@ -4047,15 +4049,15 @@
           statusTd.className = status === "สั่งเบิกแล้ว" ? "status-green" : "status-red";
           tr.appendChild(statusTd);
           const columns = [
-            "timestamp",
+            "Timestamp",
             "material",
             "description",
             "quantity",
             "vibhavadi",
             "employeeName",
             "team",
-            "callNumber",
-            "callType",
+            "CallNumber",
+            "CallType",
             "remark",
           ];
           columns.forEach((col) => {
@@ -4080,7 +4082,7 @@
               td.style.color = "red";
               td.style.fontWeight = "bold";
             }
-            if (col === "timestamp" && (row["remark"] || "").trim() !== "") {
+            if (col === "Timestamp" && (row["remark"] || "").trim() !== "") {
               td.style.color = "red";
               td.style.fontWeight = "bold";
             }
@@ -4100,14 +4102,14 @@
               .map((col) => {
                 let label = "";
                 switch (col) {
-                  case "timestamp": label = "📅 วันเวลา"; break;
+                  case "Timestamp": label = "📅 วันเวลา"; break;
                   case "material": label = "🔢 Material"; break;
                   case "description": label = "🛠️ Description"; break;
                   case "quantity": label = "🔢 จำนวน"; break;
                   case "employeeName": label = "👷‍♂️ ชื่อช่าง"; break;
                   case "team": label = "🏢 หน่วยงาน"; break;
-                  case "callNumber": label = "📄 Call"; break;
-                  case "callType": label = "🗳️ CallType"; break;
+                  case "CallNumber": label = "📄 Call"; break;
+                  case "CallType": label = "🗳️ CallType"; break;
                   case "vibhavadi": label = "📦 คลังวิภาวดี"; break;
                   case "remark": label = "📝 หมายเหตุ"; break;
                   default: label = col;
@@ -4146,20 +4148,16 @@
         document.getElementById("loading").style.display = "flex";
         document.getElementById("loadingToday").style.display = "block";
         errorContainerToday.style.display = "none";
-        console.log("Starting data load from GAS:", gasUrl);
+        console.log("Starting data load from Opensheet:", requestSheetUrl);
         try {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 15000);
-          const response = await fetch(`${gasUrl}?action=getRequests`, { signal: controller.signal });
+          const response = await fetch(requestSheetUrl, { signal: controller.signal });
           clearTimeout(timeoutId);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const res = await response.json();
-          if (res.status !== 'success') {
-            throw new Error(res.data || 'GAS error');
-          }
-          const data = res.data;
+          const data = await response.json();
           console.log("Today data loaded successfully:", data);
           if (!Array.isArray(data) || data.length === 0) {
             throw new Error("No data received or data is empty");
@@ -4190,7 +4188,7 @@
             title: "ไม่สามารถโหลดข้อมูล",
             text: error.message.includes("aborted")
               ? "การเชื่อมต่อช้าเกินไป กรุณาตรวจสอบเครือข่ายหรือลองใหม่"
-              : "ไม่สามารถโหลดข้อมูลจาก Google Apps Script ได้ กรุณาตรวจสอบ deployment",
+              : "ไม่สามารถโหลดข้อมูลจาก Google Sheets ได้ กรุณาตรวจสอบ Sheet ID, ชื่อ Sheet หรือการแชร์สาธารณะ",
             confirmButtonText: "ตกลง",
           });
         }
