@@ -2575,8 +2575,8 @@
       // Global search values for syncing between parts and images tabs
       let globalSearch1 = '';
       let globalSearch2 = '';
-      // Global for today tab: toggle all data
-      let showAllData = false;
+      // Global for today tab: toggle pending only
+      let pendingOnly = true;
       // Opensheet URL for Request sheet
       const requestSheetUrl = 'https://opensheet.elk.sh/1xyy70cq2vAxGv4gPIGiL_xA5czDXqS2i6YYqW4yEVbE/Request';
       // GAS URL for the new Code.gs deployment (update with your new script ID after deployment)
@@ -4063,12 +4063,11 @@
       window.onclick = (event) => {
         if (event.target == modal) closeModal.click();
       };
-      // Toggle all data button event
+      // Toggle pending only button event
       toggleAllDataBtn.addEventListener('click', () => {
-        showAllData = !showAllData;
-        toggleAllDataBtn.textContent = showAllData ? 'แสดงข้อมูล 2 วันล่าสุด' : 'แสดงข้อมูลทั้งหมด';
-        const filteredData = filterTodayData(allDataToday);
-        renderTableToday(filteredData);
+        pendingOnly = !pendingOnly;
+        toggleAllDataBtn.textContent = pendingOnly ? 'แสดงข้อมูลทั้งหมด' : 'แสดงเฉพาะรอเบิก';
+        updateTableToday();
       });
       // Function to sort data by Timestamp descending (latest first)
       function sortByTimestampDescending(a, b) {
@@ -4086,23 +4085,29 @@
         const dateB = parseDate(b.Timestamp);
         return dateB - dateA; // Descending order (latest first)
       }
-      function filterTodayData(data) {
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-        let filtered = data.filter(row => {
-          if (!row.Timestamp) return false;
-          const [datePart, timePart] = row.Timestamp.split(' ');
-          if (!datePart) return false;
-          const [day, month, yearBE] = datePart.split('/');
-          const yearCE = parseInt(yearBE) - 543;
-          const date = new Date(yearCE, parseInt(month) - 1, parseInt(day));
-          if (showAllData) return true;
-          // Check if date is today or yesterday (ignoring time)
-          return date >= yesterday && date <= today;
-        });
-        // Sort the filtered data by timestamp descending
+      function filterByStatus(data) {
+        let filtered = data;
+        if (pendingOnly) {
+          filtered = data.filter(row => row["status"] === "รอเบิก");
+        }
+        // Always sort by timestamp descending
         return filtered.sort(sortByTimestampDescending);
+      }
+      function updateTableToday() {
+        let dataToFilter = allDataToday;
+        const keyword = searchInputToday.value.toLowerCase();
+        if (keyword) {
+          dataToFilter = allDataToday.filter((row) => {
+            return (
+              (row["material"] || "").toLowerCase().includes(keyword) ||
+              (row["description"] || "").toLowerCase().includes(keyword) ||
+              (row["employeeName"] || "").toLowerCase().includes(keyword) ||
+              (row["team"] || "").toLowerCase().includes(keyword)
+            );
+          });
+        }
+        const filteredData = filterByStatus(dataToFilter);
+        renderTableToday(filteredData);
       }
       function renderTableToday(data) {
         tableBodyToday.innerHTML = "";
@@ -4197,18 +4202,8 @@
           tableBodyToday.appendChild(tr);
         });
       }
-      searchInputToday.addEventListener("input", (e) => {
-        const keyword = e.target.value.toLowerCase();
-        const keywordFiltered = allDataToday.filter((row) => {
-          return (
-            (row["material"] || "").toLowerCase().includes(keyword) ||
-            (row["description"] || "").toLowerCase().includes(keyword) ||
-            (row["employeeName"] || "").toLowerCase().includes(keyword) ||
-            (row["team"] || "").toLowerCase().includes(keyword)
-          );
-        });
-        const todayFiltered = filterTodayData(keywordFiltered);
-        renderTableToday(todayFiltered);
+      searchInputToday.addEventListener("input", () => {
+        updateTableToday();
       });
       async function loadTodayData() {
         document.getElementById("loading").style.display = "flex";
@@ -4229,8 +4224,7 @@
             throw new Error("No data received or data is empty");
           }
           allDataToday = data;
-          const filteredData = filterTodayData(data);
-          renderTableToday(filteredData);
+          updateTableToday();
           document.getElementById("loading").style.display = "none";
           document.getElementById("loadingToday").style.display = "none";
           document.getElementById("data-table-today").style.display = "table";
