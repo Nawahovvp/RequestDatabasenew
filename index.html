@@ -3402,16 +3402,16 @@
         };
         // แสดง loading
         Swal.fire({
-          title: 'กำลังบันทึกข้อมูล...',
-          html: `
-            <div class="swal2-spinner-container">
-              <div class="swal2-spinner"></div>
-              <p>กรุณารอสักครู่...</p>
-            </div>
-          `,
-          showConfirmButton: false,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
+    title: 'กำลังบันทึกข้อมูล...',
+    html: `
+      <div class="swal2-spinner-container">
+        <div class="swal2-spinner"></div>
+        <p>กรุณารอสักครู่...</p>
+      </div>
+    `,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
           didOpen: () => {
             // Ensure full blur for loading popup (logic เดิม)
             const swalContainer = document.querySelector('.swal2-container');
@@ -3455,21 +3455,21 @@
           }
         });
         try {
-  const response = await fetch(gasUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `payload=${encodeURIComponent(JSON.stringify(jsonPayload))}`
-  });
-  const gasResult = await response.json(); // Parse JSON directly (no <pre> tag)
-          if (gasResult.status === 'success') {
-            Swal.fire({
-              icon: 'success',
-              title: 'ส่งข้อมูลสำเร็จ!',
-              text: gasResult.data.message || 'ข้อมูลได้ถูกบันทึกเรียบร้อยแล้ว',
-              confirmButtonText: 'OK'
-            }).then((result) => {
+    const response = await fetch(gasUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `action=insertRequest&payload=${encodeURIComponent(JSON.stringify(jsonPayload))}`  // <- แก้ไขตรงนี้
+    });
+    const gasResult = await response.json();
+    if (gasResult.status === 'success') {
+      Swal.fire({
+        icon: 'success',
+        title: 'ส่งข้อมูลสำเร็จ!',
+        text: gasResult.data.message || 'ข้อมูลได้ถูกบันทึกเรียบร้อยแล้ว',
+        confirmButtonText: 'OK'
+      }).then((result) => {
               if (result.isConfirmed) {
                 Swal.fire({
                   title: 'กำลังเปลี่ยนหน้า...',
