@@ -627,6 +627,20 @@
         top: 0;
         z-index: 1;
       }
+      #today th.sortable {
+        cursor: pointer;
+        position: relative;
+      }
+      #today th.sortable:hover {
+        background: linear-gradient(135deg, #1976d2, #1565c0);
+      }
+      body.dark-mode #today th.sortable:hover {
+        background: linear-gradient(135deg, #16a085, #1abc9c);
+      }
+      #today .today-arrow {
+        font-size: 12px;
+        margin-left: 5px;
+      }
       #parts tr:hover, #images tr:hover, #today tr:hover {
         background-color: #f5f5f5;
       }
@@ -648,14 +662,14 @@
       body.dark-mode #today .table-container {
         background: #2c3e50;
       }
-      #parts .pagination, #images .pagination-images {
+      #parts .pagination, #images .pagination-images, #today .pagination-today {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         margin-top: 12px;
       }
-      #parts .pagination button, #images .pagination-images button {
+      #parts .pagination button, #images .pagination-images button, #today .pagination-today button {
         background: linear-gradient(135deg, #42a5f5, #2196f3);
         color: white;
         padding: 8px;
@@ -668,18 +682,18 @@
         font-size: 13px;
         transition: all 0.3s ease;
       }
-      #parts .pagination button:hover, #images .pagination-images button:hover {
+      #parts .pagination button:hover, #images .pagination-images button:hover, #today .pagination-today button:hover {
         background: linear-gradient(135deg, #1976d2, #1565c0);
         transform: translateY(-2px);
       }
-      #parts .pagination .active, #images .pagination-images .active {
+      #parts .pagination .active, #images .pagination-images .active, #today .pagination-today .active {
         background: linear-gradient(135deg, #ff9800, #f57c00);
       }
-      #parts .pagination button:disabled, #images .pagination-images button:disabled {
+      #parts .pagination button:disabled, #images .pagination-images button:disabled, #today .pagination-today button:disabled {
         background: #b0bec5;
         cursor: not-allowed;
       }
-      #parts .pagination select, #images .pagination-images select {
+      #parts .pagination select, #images .pagination-images select, #today .pagination-today select {
         padding: 8px;
         border-radius: 6px;
         margin: 0 10px;
@@ -2137,8 +2151,8 @@
       /* Gallery Styles for #images tab */
       #images .gallery-container-images {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
         max-height: 80vh;
         overflow-y: auto;
         padding: 10px;
@@ -2152,7 +2166,7 @@
       #images .gallery-item {
         background: white;
         border-radius: 12px;
-        padding: 15px;
+        padding: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
         text-align: center;
@@ -2168,7 +2182,7 @@
       }
       #images .gallery-thumbnail {
         width: 100%;
-        height: 200px;
+        height: 120px;
         object-fit: cover;
         border-radius: 8px;
         margin-bottom: 10px;
@@ -2216,14 +2230,14 @@
       /* Responsive for gallery on mobile */
       @media (max-width: 768px) {
         #images .gallery-container-images {
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-          gap: 10px;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 8px;
         }
         #images .gallery-thumbnail {
-          height: 150px;
+          height: 100px;
         }
         #images .gallery-item {
-          padding: 10px;
+          padding: 6px;
         }
       }
       /* Button for toggling all data in #today tab */
@@ -2311,8 +2325,8 @@
         </div>
         <div id="parts" class="tab-content active">
           <div id="searchContainer">
-            <input type="text" id="searchInput1" placeholder="ค้นหา Material/Code" />
-            <input type="text" id="searchInput2" placeholder="ค้นหา Description/หมายเหตุ" />
+            <input type="text" id="searchInput1" placeholder="ค้นหา Step 1" />
+            <input type="text" id="searchInput2" placeholder="ค้นหา Step 2" />
             <button id="searchButton" class="refresh-button">
               <i class="fas fa-search"></i>
             </button>
@@ -2370,8 +2384,8 @@
         </div>
         <div id="images" class="tab-content">
           <div id="searchContainerImages">
-            <input type="text" id="searchInputImages1" placeholder="ค้นหา Material/Code" />
-            <input type="text" id="searchInputImages2" placeholder="ค้นหา Description/หมายเหตุ" />
+            <input type="text" id="searchInputImages1" placeholder="ค้นหา Step 1" />
+            <input type="text" id="searchInputImages2" placeholder="ค้นหา Step 2" />
             <button id="searchButtonImages" class="refresh-button-images">
               <i class="fas fa-search"></i>
             </button>
@@ -2430,7 +2444,7 @@
               <thead>
                 <tr>
                   <th>Status</th>
-                  <th>วันเวลาบันทึก</th>
+                  <th class="sortable" data-column="Timestamp">วันเวลาบันทึก <span class="today-arrow">↓</span></th>
                   <th>Material</th>
                   <th>Description</th>
                   <th>จำนวน</th>
@@ -2445,6 +2459,26 @@
               </thead>
               <tbody></tbody>
             </table>
+          </div>
+          <!-- Pagination for Today Tab -->
+          <div id="paginationToday" class="pagination-today">
+            <button id="firstPageToday">
+              <i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="prevPageToday"><i class="fas fa-chevron-left"></i></button>
+            <div id="pageNumbersToday"></div>
+            <button id="nextPageToday"><i class="fas fa-chevron-right"></i></button>
+            <button id="lastPageToday">
+              <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="items-per-page-today">
+              <label for="itemsPerPageToday">Show</label>
+              <select id="itemsPerPageToday">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="30">30</option>
+              </select>
+            </div>
           </div>
           <div id="detailModal" class="modal">
             <div class="modal-content">
@@ -2577,6 +2611,11 @@
       let globalSearch2 = '';
       // Global for today tab: toggle pending only
       let pendingOnly = true;
+      // Sort config for today tab
+      let sortConfigToday = { column: 'Timestamp', direction: 'desc' }; // Default to descending Timestamp
+      // Pagination config for today tab
+      let currentPageToday = 1;
+      let itemsPerPageToday = 20; // Default to 20 items per page
       // Opensheet URL for Request sheet
       const requestSheetUrl = 'https://opensheet.elk.sh/1xyy70cq2vAxGv4gPIGiL_xA5czDXqS2i6YYqW4yEVbE/Request';
       // GAS URL for the new Code.gs deployment (update with your new script ID after deployment)
@@ -4050,7 +4089,16 @@
       const errorContainerToday = document.getElementById("error-container-today");
       const retryButtonToday = document.getElementById("retry-button-today");
       const toggleAllDataBtn = document.getElementById("toggleAllDataBtn");
+      // Pagination elements for today tab
+      const paginationToday = document.getElementById("paginationToday");
+      const pageNumbersToday = document.getElementById("pageNumbersToday");
+      const itemsPerPageSelectToday = document.getElementById("itemsPerPageToday");
+      const firstPageButtonToday = document.getElementById("firstPageToday");
+      const prevPageButtonToday = document.getElementById("prevPageToday");
+      const nextPageButtonToday = document.getElementById("nextPageToday");
+      const lastPageButtonToday = document.getElementById("lastPageToday");
       let allDataToday = [];
+      let currentFilteredDataToday = [];
       retryButtonToday.addEventListener("click", () => {
         errorContainerToday.style.display = "none";
         loadTodayData();
@@ -4067,31 +4115,111 @@
       toggleAllDataBtn.addEventListener('click', () => {
         pendingOnly = !pendingOnly;
         toggleAllDataBtn.textContent = pendingOnly ? 'แสดงข้อมูลทั้งหมด' : 'แสดงเฉพาะรอเบิก';
+        currentPageToday = 1; // Reset page on toggle
         updateTableToday();
       });
-      // Function to sort data by Timestamp descending (latest first)
-      function sortByTimestampDescending(a, b) {
-        if (!a.Timestamp || !b.Timestamp) return 0;
-        const parseDate = (timestamp) => {
-          const [datePart, timePart] = timestamp.split(' ');
-          if (!datePart) return new Date(0);
-          const [day, month, yearBE] = datePart.split('/');
-          const yearCE = parseInt(yearBE) - 543;
-          if (!timePart) return new Date(yearCE, parseInt(month) - 1, parseInt(day));
-          const [hour, minute, second] = timePart.split(':').map(Number);
-          return new Date(yearCE, parseInt(month) - 1, parseInt(day), hour || 0, minute || 0, second || 0);
-        };
-        const dateA = parseDate(a.Timestamp);
-        const dateB = parseDate(b.Timestamp);
-        return dateB - dateA; // Descending order (latest first)
+      // Items per page change event for today tab
+      itemsPerPageSelectToday.addEventListener("change", () => {
+        itemsPerPageToday = parseInt(itemsPerPageSelectToday.value, 10);
+        currentPageToday = 1;
+        updateTableToday();
+      });
+      // Pagination button events for today tab
+      firstPageButtonToday.addEventListener("click", () => {
+        currentPageToday = 1;
+        updateTableToday();
+      });
+      prevPageButtonToday.addEventListener("click", () => {
+        if (currentPageToday > 1) {
+          currentPageToday--;
+          updateTableToday();
+        }
+      });
+      nextPageButtonToday.addEventListener("click", () => {
+        const totalPages = Math.ceil(currentFilteredDataToday.length / itemsPerPageToday);
+        if (currentPageToday < totalPages) {
+          currentPageToday++;
+          updateTableToday();
+        }
+      });
+      lastPageButtonToday.addEventListener("click", () => {
+        const totalPages = Math.ceil(currentFilteredDataToday.length / itemsPerPageToday);
+        currentPageToday = totalPages;
+        updateTableToday();
+      });
+      // Function to sort data by column (for sortable headers)
+      function sortByColumn(a, b, column, direction) {
+        let valueA = a[column] || "";
+        let valueB = b[column] || "";
+        if (column === 'Timestamp') {
+          // Custom sort for Timestamp (descending by default)
+          const parseDate = (timestamp) => {
+            if (!timestamp) return new Date(0);
+            const [datePart, timePart] = timestamp.split(' ');
+            const [day, month, yearBE] = datePart.split('/');
+            const yearCE = parseInt(yearBE) - 543;
+            if (!timePart) return new Date(yearCE, parseInt(month) - 1, parseInt(day));
+            const [hour, minute, second] = timePart.split(':').map(Number);
+            return new Date(yearCE, parseInt(month) - 1, parseInt(day), hour || 0, minute || 0, second || 0);
+          };
+          const dateA = parseDate(valueA);
+          const dateB = parseDate(valueB);
+          return direction === 'asc' ? dateA - dateB : dateB - dateA;
+        } else {
+          // Default string/numeric sort
+          if (!isNaN(valueA) && !isNaN(valueB)) {
+            valueA = parseFloat(valueA);
+            valueB = parseFloat(valueB);
+            return direction === 'asc' ? valueA - valueB : valueB - valueA;
+          }
+          valueA = valueA.toString().toLowerCase();
+          valueB = valueB.toString().toLowerCase();
+          return direction === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+        }
       }
+      // Add sort listeners for today tab
+      function addSortListenersToday() {
+        const sortableHeaders = document.querySelectorAll("#today th.sortable");
+        sortableHeaders.forEach(header => {
+          header.addEventListener("click", () => {
+            const column = header.getAttribute("data-column");
+            if (sortConfigToday.column === column) {
+              sortConfigToday.direction = sortConfigToday.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+              sortConfigToday.column = column;
+              sortConfigToday.direction = 'desc'; // Default to descending for Timestamp
+            }
+            updateSortArrowsToday();
+            updateTableToday();
+          });
+        });
+      }
+      function updateSortArrowsToday() {
+        const sortableHeaders = document.querySelectorAll("#today th.sortable");
+        sortableHeaders.forEach(header => {
+          const arrow = header.querySelector(".today-arrow");
+          const column = header.getAttribute("data-column");
+          if (column === sortConfigToday.column) {
+            arrow.textContent = sortConfigToday.direction === 'asc' ? '↑' : '↓';
+          } else {
+            arrow.textContent = '';
+          }
+        });
+      }
+      // Initial call to add listeners after load
+      document.addEventListener('DOMContentLoaded', () => {
+        addSortListenersToday();
+      });
       function filterByStatus(data) {
         let filtered = data;
         if (pendingOnly) {
           filtered = data.filter(row => row["status"] === "รอเบิก");
         }
-        // Always sort by timestamp descending
-        return filtered.sort(sortByTimestampDescending);
+        // Apply sort based on config
+        if (sortConfigToday.column) {
+          filtered.sort((a, b) => sortByColumn(a, b, sortConfigToday.column, sortConfigToday.direction));
+        }
+        return filtered;
       }
       function updateTableToday() {
         let dataToFilter = allDataToday;
@@ -4107,7 +4235,13 @@
           });
         }
         const filteredData = filterByStatus(dataToFilter);
-        renderTableToday(filteredData);
+        currentFilteredDataToday = filteredData;
+        // Paginate
+        const startIndex = (currentPageToday - 1) * itemsPerPageToday;
+        const endIndex = startIndex + itemsPerPageToday;
+        const paginatedData = filteredData.slice(startIndex, endIndex);
+        renderTableToday(paginatedData);
+        renderPaginationToday(filteredData.length);
       }
       function renderTableToday(data) {
         tableBodyToday.innerHTML = "";
@@ -4202,7 +4336,45 @@
           tableBodyToday.appendChild(tr);
         });
       }
+      function renderPaginationToday(totalItems) {
+        const totalPages = Math.ceil(totalItems / itemsPerPageToday);
+        pageNumbersToday.innerHTML = "";
+        if (totalPages === 0) {
+          firstPageButtonToday.disabled = true;
+          prevPageButtonToday.disabled = true;
+          nextPageButtonToday.disabled = true;
+          lastPageButtonToday.disabled = true;
+          return;
+        }
+        let startPage = Math.max(1, currentPageToday - 2);
+        let endPage = Math.min(totalPages, currentPageToday + 2);
+        if (totalPages <= 5) {
+          startPage = 1;
+          endPage = totalPages;
+        } else {
+          if (currentPageToday <= 3) {
+            endPage = 5;
+          } else if (currentPageToday >= totalPages - 2) {
+            startPage = totalPages - 4;
+          }
+        }
+        for (let page = startPage; page <= endPage; page++) {
+          const button = document.createElement("button");
+          button.textContent = page;
+          button.className = page === currentPageToday ? "active" : "";
+          button.onclick = () => {
+            currentPageToday = page;
+            updateTableToday();
+          };
+          pageNumbersToday.appendChild(button);
+        }
+        firstPageButtonToday.disabled = currentPageToday === 1;
+        prevPageButtonToday.disabled = currentPageToday === 1;
+        nextPageButtonToday.disabled = currentPageToday === totalPages;
+        lastPageButtonToday.disabled = currentPageToday === totalPages;
+      }
       searchInputToday.addEventListener("input", () => {
+        currentPageToday = 1; // Reset page on search
         updateTableToday();
       });
       async function loadTodayData() {
@@ -4224,6 +4396,7 @@
             throw new Error("No data received or data is empty");
           }
           allDataToday = data;
+          currentPageToday = 1; // Reset page on load
           updateTableToday();
           document.getElementById("loading").style.display = "none";
           document.getElementById("loadingToday").style.display = "none";
