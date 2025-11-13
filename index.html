@@ -26,6 +26,8 @@
         background-color: #eceff1;
         font-family: "Kanit", sans-serif;
         transition: background-color 0.3s ease, color 0.3s ease;
+        -webkit-text-size-adjust: 100%; /* Prevent iOS zoom on input focus */
+        -webkit-touch-callout: none; /* Disable callout on long press */
       }
       /* Dark Mode Styles */
       body.dark-mode {
@@ -186,8 +188,8 @@
       }
       /* Ensure light mode doesn't override dark-specific */
       body.light-mode .header {
-        background: linear-gradient(135deg, #fff3e0, #ffebee);
-        color: #1a3c87;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
       }
       /* ... other light overrides if needed, but mostly default */
       /* Login Modal Styles */
@@ -243,7 +245,7 @@
         margin: 10px 0;
         border: 1px solid #e0e0e0;
         border-radius: 6px;
-        font-size: 16px;
+        font-size: 16px; /* Prevent zoom on focus */
         box-sizing: border-box;
         transition: all 0.3s ease;
         background-color: white;
@@ -305,6 +307,7 @@
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        min-height: 44px; /* Touch-friendly */
       }
       .login-content button:hover {
         background: linear-gradient(135deg, #1976d2, #1565c0);
@@ -335,6 +338,10 @@
         font-size: 14px;
         margin-left: 10px;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .logout-btn:hover {
         background: linear-gradient(135deg, #d32f2f, #b71c1c);
@@ -360,14 +367,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #1a3c87;
-        padding: 10px 20px;
-        border-bottom: 2px solid #ff80ab;
-        border-radius: 12px;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        color: #ffffff;
+        padding: 15px 20px;
+        border-bottom: 3px solid #764ba2;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
         font-family: "Itim", cursive;
         position: relative;
-        background: linear-gradient(135deg, #fff3e0, #ffebee);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         margin: 10px auto;
         max-width: 1500px;
         transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
@@ -376,11 +383,11 @@
         transform: translateY(-2px);
       }
       .header h1 {
-        color: #1a3c87;
+        color: #ffffff;
         margin: 0;
-        font-size: 30px;
-        font-weight: normal;
-        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.1);
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         white-space: nowrap;
         text-align: center;
         flex-grow: 1;
@@ -388,24 +395,24 @@
       }
       .header-right {
         display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 2px;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
       }
       .user-name-small {
         font-size: 12px;
-        color: #e91e63;
+        color: #ffffff;
         font-weight: bold;
         text-align: right;
         white-space: nowrap;
         transition: color 0.3s ease;
       }
       .qrcode-header-btn {
-        background: linear-gradient(135deg, #4caf50, #388e3c);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
         color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 14px;
+        border-radius: 25px;
         cursor: pointer;
         font-size: 14px;
         margin-right: 10px;
@@ -413,10 +420,13 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        backdrop-filter: blur(10px);
+        min-height: 44px; /* Touch-friendly */
       }
       .qrcode-header-btn:hover {
-        background: linear-gradient(135deg, #388e3c, #4caf50);
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
       }
       .container {
         max-width: 1500px;
@@ -449,6 +459,7 @@
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         position: relative;
         overflow: hidden;
+        min-height: 44px; /* Touch-friendly */
       }
       .tab-button::before {
         content: '';
@@ -549,7 +560,7 @@
         padding: 10px;
         border-radius: 6px;
         border: 1px solid #e0e0e0;
-        font-size: 15px;
+        font-size: 16px; /* Prevent zoom */
         transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         background-color: white;
       }
@@ -580,6 +591,7 @@
         transition: all 0.3s ease;
         margin-left: 10px;
         flex-shrink: 0;
+        min-height: 44px; /* Touch-friendly */
       }
       #parts .refresh-button:hover, #images .refresh-button-images:hover {
         background: linear-gradient(135deg, #1976d2, #1565c0);
@@ -681,6 +693,8 @@
         height: 36px;
         font-size: 13px;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly - adjust padding accordingly */
+        min-width: 44px;
       }
       #parts .pagination button:hover, #images .pagination-images button:hover, #today .pagination-today button:hover {
         background: linear-gradient(135deg, #1976d2, #1565c0);
@@ -732,6 +746,9 @@
       #parts th:nth-child(8), #parts td:nth-child(8), #images th:nth-child(8), #images td:nth-child(8) {
         min-width: 150px;
       }
+      #today td:nth-child(5) {
+    text-align: left;
+      }
       #parts .requisition-button, #today .detail-button, #images .requisition-button-images {
         background: linear-gradient(135deg, #4caf50, #388e3c);
         color: white;
@@ -744,6 +761,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         text-transform: uppercase;
+        min-height: 44px; /* Touch-friendly */
       }
       #parts .requisition-button:hover, #today .detail-button:hover, #images .requisition-button-images:hover {
         background: linear-gradient(135deg, #388e3c, #4caf50);
@@ -774,6 +792,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        min-height: 44px; /* Touch-friendly */
       }
       #parts .image-button:hover, #images .image-button-images:hover {
         background: linear-gradient(135deg, #1565c0, #0d47a1);
@@ -796,7 +815,7 @@
         width: 100%;
         box-sizing: border-box;
         border-radius: 6px;
-        font-size: 14px;
+        font-size: 16px; /* Prevent zoom */
         padding: 6px;
         height: 36px;
         transition: background-color 0.3s ease;
@@ -813,7 +832,7 @@
         padding: 6px;
         box-sizing: border-box;
         border-radius: 6px;
-        font-size: 14px;
+        font-size: 16px; /* Prevent zoom */
         height: 36px;
         transition: background-color 0.3s ease;
         background-color: white;
@@ -1022,6 +1041,7 @@
         cursor: pointer;
         margin-top: 10px;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #retry-button:hover, #retry-button-images:hover, #retry-button-today:hover {
         background: linear-gradient(135deg, #f44336, #ff7043);
@@ -1090,6 +1110,7 @@
       .swal2-confirm, .swal2-cancel {
         font-size: 14px !important;
         padding: 8px 16px !important;
+        min-height: 44px; /* Touch-friendly */
       }
       .swal2-confirm:disabled {
         background: #b0bec5 !important;
@@ -1166,8 +1187,8 @@
           font-size: 13px !important;
         }
         .swal2-input, .swal2-select {
-          font-size: 13px;
-          height: 34px;
+          font-size: 16px; /* Maintain 16px to prevent zoom */
+          height: 44px; /* Touch-friendly */
         }
         .swal2-label {
           font-size: 13px;
@@ -1202,7 +1223,7 @@
         padding: 10px;
         border-radius: 8px;
         border: 1px solid #ccc;
-        font-size: 16px;
+        font-size: 16px; /* Prevent zoom */
         transition: background-color 0.3s ease, border-color 0.3s ease;
         background-color: white;
       }
@@ -1268,6 +1289,7 @@
         border-radius: 6px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #all .detail-button:hover {
         background-color: #2980b9;
@@ -1349,6 +1371,7 @@
         font-size: 16px;
         margin: 0 5px;
         transition: background-color 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #all .all-pagination button:hover,
       #all .all-pagination select:hover {
@@ -1560,7 +1583,7 @@
         border-radius: 8px 0 0 8px;
         border: 1px solid #ccc;
         border-right: none;
-        font-size: 16px;
+        font-size: 16px; /* Prevent zoom */
         transition: background-color 0.3s ease, border-color 0.3s ease;
         background-color: white;
       }
@@ -1578,6 +1601,7 @@
         border-radius: 0 8px 8px 0;
         cursor: pointer;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #pending-calls #searchButtonPending:hover {
         background-color: #2980b9;
@@ -1645,6 +1669,7 @@
         border-radius: 6px;
         cursor: pointer;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #pending-calls .pending-detail-button:hover {
         background-color: #2980b9;
@@ -1730,6 +1755,7 @@
         font-size: 16px;
         margin: 0 5px;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #pending-calls .pending-pagination button:hover,
       #pending-calls .pending-pagination select:hover {
@@ -1907,7 +1933,7 @@
         border-color: #95a5a6;
         color: #ecf0f1;
       }
-      /* Responsive adjustments for mobile devices */
+      /* Enhanced Responsive adjustments for mobile devices */
       @media screen and (max-width: 768px) {
         body {
           font-size: 14px; /* Smaller base font size */
@@ -1937,6 +1963,7 @@
           font-size: 12px; /* Smaller font */
           margin-left: 0; /* Remove margin to save space */
           white-space: nowrap; /* Prevent wrapping */
+          min-height: 44px; /* Maintain touch size */
         }
         .user-name-small {
           font-size: 10px; /* Smaller font for name */
@@ -1951,17 +1978,18 @@
         }
         .tab-button {
           font-size: 14px; /* Smaller tab font */
-          padding: 10px;
+          padding: 12px; /* Bigger padding for touch */
+          min-height: 48px; /* Larger touch target */
         }
         #parts th, #parts td, #images th, #images td, #today th, #today td {
           padding: 6px 4px; /* Compact padding */
           font-size: 12px; /* Smaller table font */
         }
         #parts table, #images table, #today table {
-          min-width: 600px; /* Reduced min-width for mobile */
+          min-width: 500px; /* Reduced min-width for mobile scrolling */
         }
         #parts #searchInput1, #parts #searchInput2, #images #searchInputImages1, #images #searchInputImages2, #today #searchInputToday {
-          font-size: 14px;
+          font-size: 16px; /* Prevent zoom */
           max-width: 100%; /* Full width on mobile */
           min-width: 100px;
         }
@@ -1998,6 +2026,27 @@
         .swal2-backdrop {
           z-index: 99997 !important;
         }
+        /* Pagination buttons larger for touch */
+        .pagination button {
+          width: 44px;
+          height: 44px;
+          font-size: 14px;
+        }
+        /* Gallery adjustment */
+        #images .gallery-container-images {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 8px;
+        }
+        #images .gallery-thumbnail {
+          height: 100px;
+        }
+        #images .gallery-item {
+          padding: 8px;
+        }
+        /* All and pending tables min-width reduce */
+        #all table, #pending-calls table {
+          min-width: 500px;
+        }
       }
       @media screen and (max-width: 480px) {
         .header h1 {
@@ -2006,10 +2055,49 @@
         .header-right {
           flex-direction: column; /* Stack vertically if still too tight */
           align-items: flex-end;
+          gap: 5px;
         }
         #parts th, #parts td, #images th, #images td, #today th, #today td {
           padding: 4px 2px; /* Even more compact */
           font-size: 11px;
+        }
+        /* Further reduce table min-width */
+        #parts table, #images table, #today table, #all table, #pending-calls table {
+          min-width: 400px;
+        }
+        .tab-button {
+          font-size: 13px;
+          padding: 10px;
+        }
+        /* Ensure inputs don't zoom */
+        input, select {
+          font-size: 16px;
+        }
+      }
+      /* Landscape mobile adjustments */
+      @media screen and (max-width: 768px) and (orientation: landscape) {
+        .login-content {
+          max-width: 80vw;
+          padding: 20px;
+        }
+        .header {
+          padding: 10px 15px;
+        }
+        .header h1 {
+          font-size: 16px;
+          flex-basis: auto;
+        }
+        .tabs {
+          flex-direction: row;
+          gap: 5px;
+        }
+        .tab-button {
+          flex: none;
+          font-size: 12px;
+          padding: 8px 12px;
+        }
+        .container {
+          padding: 8px;
         }
       }
       /* Additional styles for #parts image modal (reuse existing modal styles) */
@@ -2078,14 +2166,14 @@
         min-width: 120px;
         font-weight: 500;
         color: #2196f3;
-        font-size: 15px;
+        font-size: 13px;
         transition: color 0.3s ease;
       }
       body.dark-mode #parts #imageModalContent span.label, body.dark-mode #images #imageModalContentImages span.label {
         color: #1abc9c;
       }
       #parts #imageModalContent span.value, #images #imageModalContentImages span.value {
-        font-size: 15px;
+        font-size: 13px;
         color: #37474f;
         transition: color 0.3s ease;
       }
@@ -2136,6 +2224,7 @@
         transition: all 0.3s ease;
         text-transform: uppercase;
         white-space: nowrap;
+        min-height: 44px; /* Touch-friendly */
       }
       #parts #imageModalContent .material-row .requisition-button:hover, #images #imageModalContentImages .material-row .requisition-button-images:hover {
         background: linear-gradient(135deg, #388e3c, #4caf50);
@@ -2193,20 +2282,21 @@
         transform: scale(1.05);
       }
       #images .gallery-info {
-        font-size: 14px;
-        line-height: 1.4;
+        font-size: 12px;
+        line-height: 1.3;
       }
       #images .gallery-material {
         font-weight: bold;
         color: #2196f3;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
+        font-size: 12px;
       }
       body.dark-mode #images .gallery-material {
         color: #1abc9c;
       }
       #images .gallery-description {
         color: #666;
-        font-size: 12px;
+        font-size: 11px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -2217,15 +2307,16 @@
         color: #bdc3c7;
       }
       #images .gallery-actions {
-        margin-top: 10px;
+        margin-top: 8px;
         display: flex;
-        gap: 10px;
+        gap: 5px;
         justify-content: center;
       }
       #images .gallery-item .requisition-button-images,
       #images .gallery-item .image-button-images {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 4px 8px;
+        font-size: 10px;
+        min-height: 36px; /* Adjust for touch in gallery */
       }
       /* Responsive for gallery on mobile */
       @media (max-width: 768px) {
@@ -2251,6 +2342,7 @@
         cursor: pointer;
         margin-bottom: 10px;
         transition: all 0.3s ease;
+        min-height: 44px; /* Touch-friendly */
       }
       #today #toggleAllDataBtn:hover {
         background: linear-gradient(135deg, #f57c00, #ff9800);
@@ -2292,13 +2384,13 @@
           <h1>ระบบขอเบิกอะไหล่คลังสินค้านวนคร</h1>
         </div>
         <div class="header-right">
+          <span id="userNameSmall" class="user-name-small"></span>
           <button class="setting-btn" onclick="showSettings()" title="Settings">
             <i class="fas fa-cog"></i>
           </button>
           <button class="logout-btn" onclick="handleLogout()" id="logoutBtn" style="display: none;">
             <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
           </button>
-          <span id="userNameSmall" class="user-name-small"></span>
         </div>
       </div>
       <div class="loading" id="loading">
@@ -2444,6 +2536,7 @@
               <thead>
                 <tr>
                   <th>Status</th>
+                  <th class="sortable" data-column="IDRow">ลำดับ <span class="today-arrow">↓</span></th>
                   <th class="sortable" data-column="Timestamp">วันเวลาบันทึก <span class="today-arrow">↓</span></th>
                   <th>Material</th>
                   <th>Description</th>
@@ -2612,7 +2705,7 @@
       // Global for today tab: toggle pending only
       let pendingOnly = true;
       // Sort config for today tab
-      let sortConfigToday = { column: 'Timestamp', direction: 'desc' }; // Default to descending Timestamp
+      let sortConfigToday = { column: 'IDRow', direction: 'desc' }; // Default to descending IDRow
       // Pagination config for today tab
       let currentPageToday = 1;
       let itemsPerPageToday = 20; // Default to 20 items per page
@@ -3052,8 +3145,8 @@
                 margin: 4px 0 !important;
                 padding: 6px !important;
                 box-sizing: border-box !important;
-                font-size: 14px !important;
-                height: 36px !important;
+                font-size: 16px !important; /* Prevent zoom */
+                height: 44px !important; /* Touch-friendly */
               }
               .error-message {
                 color: red !important;
@@ -3922,9 +4015,6 @@
               <button class="requisition-button-images" onclick="showRequisitionDialog(${JSON.stringify(row).replace(/"/g, '&quot;')})">
                 เบิก
               </button>
-              <button class="image-button-images" onclick="showImageModalImages(${JSON.stringify(row).replace(/"/g, '&quot;')})">
-                <i class="fas fa-image"></i> ดูรูป
-              </button>
             </div>
           `;
           galleryContainer.appendChild(galleryItem);
@@ -4151,20 +4241,24 @@
       function sortByColumn(a, b, column, direction) {
         let valueA = a[column] || "";
         let valueB = b[column] || "";
-        if (column === 'Timestamp') {
-          // Custom sort for Timestamp (descending by default)
-          const parseDate = (timestamp) => {
-            if (!timestamp) return new Date(0);
-            const [datePart, timePart] = timestamp.split(' ');
+        if (column === 'IDRow' || column === 'Timestamp') {
+          // Custom sort for IDRow (descending by default) and Timestamp
+          const parseDateOrId = (value) => {
+            if (!value) return 0;
+            if (column === 'IDRow') {
+              return parseInt(value, 10) || 0;
+            }
+            // For Timestamp
+            const [datePart, timePart] = value.split(' ');
             const [day, month, yearBE] = datePart.split('/');
             const yearCE = parseInt(yearBE) - 543;
-            if (!timePart) return new Date(yearCE, parseInt(month) - 1, parseInt(day));
+            if (!timePart) return new Date(yearCE, parseInt(month) - 1, parseInt(day)).getTime();
             const [hour, minute, second] = timePart.split(':').map(Number);
-            return new Date(yearCE, parseInt(month) - 1, parseInt(day), hour || 0, minute || 0, second || 0);
+            return new Date(yearCE, parseInt(month) - 1, parseInt(day), hour || 0, minute || 0, second || 0).getTime();
           };
-          const dateA = parseDate(valueA);
-          const dateB = parseDate(valueB);
-          return direction === 'asc' ? dateA - dateB : dateB - dateA;
+          const numA = parseDateOrId(valueA);
+          const numB = parseDateOrId(valueB);
+          return direction === 'asc' ? numA - numB : numB - numA;
         } else {
           // Default string/numeric sort
           if (!isNaN(valueA) && !isNaN(valueB)) {
@@ -4187,7 +4281,7 @@
               sortConfigToday.direction = sortConfigToday.direction === 'asc' ? 'desc' : 'asc';
             } else {
               sortConfigToday.column = column;
-              sortConfigToday.direction = 'desc'; // Default to descending for Timestamp
+              sortConfigToday.direction = column === 'IDRow' ? 'desc' : 'asc'; // Default descending for IDRow
             }
             updateSortArrowsToday();
             updateTableToday();
@@ -4227,6 +4321,7 @@
         if (keyword) {
           dataToFilter = allDataToday.filter((row) => {
             return (
+              (row["IDRow"] || "").toLowerCase().includes(keyword) ||
               (row["material"] || "").toLowerCase().includes(keyword) ||
               (row["description"] || "").toLowerCase().includes(keyword) ||
               (row["employeeName"] || "").toLowerCase().includes(keyword) ||
@@ -4252,6 +4347,10 @@
           statusTd.textContent = status;
           statusTd.className = status === "สั่งเบิกแล้ว" ? "status-green" : "status-red";
           tr.appendChild(statusTd);
+          // Add IDRow column
+          const idRowTd = document.createElement("td");
+          idRowTd.textContent = row["IDRow"] || "";
+          tr.appendChild(idRowTd);
           const columns = [
             "Timestamp",
             "material",
@@ -4302,10 +4401,11 @@
           btn.textContent = "ดูรายละเอียด";
           btn.className = "detail-button";
           btn.onclick = () => {
-            modalContent.innerHTML = columns
+            modalContent.innerHTML = ["IDRow", ...columns]
               .map((col) => {
                 let label = "";
                 switch (col) {
+                  case "IDRow": label = "🆔 ลำดับ"; break;
                   case "Timestamp": label = "📅 วันเวลา"; break;
                   case "material": label = "🔢 Material"; break;
                   case "description": label = "🛠️ Description"; break;
